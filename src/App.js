@@ -1,60 +1,91 @@
-import logo from './logo.svg';
 import './App.css';
-import { API_URL, username, password } from './Constants'
+import { BrowserRouter as Router, Route, Switch, Redirect, useLocation } from 'react-router-dom'
 
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import axios from 'axios'
-
-
-
-const auth = {auth: {username, password}} 
+import Login from './components/loginPage/LoginPage.js';
+import Heder from './components/Heder/Heder.js';
+import Start from './components/Start/Start';
 
 
 
+import { useSelector } from 'react-redux';
 
-const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
-
-
-
-const Test =  () => {
-
-  
-  axios.post(`${API_URL}/?typerequest=sendConformationCode`,{},{s:1, d2:2})
-  axios.get(`${API_URL}/?typerequest=sendConformationCode`)
-  
-  
- 
-}
-
-
-
+import  firebase from './firebase'
 
 function App() {
-  return (
-    <div className="App">
-      <Button variant="contained" color="primary" onClick={Test}>
-        ТЕСТ111
-      </Button>
 
 
-    </div>
-  );
+    return (
+        <div className="btb">
+
+            <Router>
+
+                <>
+
+                    <Heder />
+
+                    <Switch>
+
+                        
+
+                        <Route path="/login">
+                            <Login />
+                        </Route>
+
+
+                        <PrivateRoute exact path="/">
+                            <Start />
+                        </PrivateRoute>
+
+
+                       
+
+
+                        <Route path="*">
+                            <NoMatch />
+                        </Route>
+
+                    </Switch>
+                </>
+            </Router>
+        </div>
+    )
 }
+
+function PrivateRoute({ children, ...rest }) {
+
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+
+    return (
+        <Route
+            {...rest}
+            render={({ location }) =>
+                isLoggedIn ? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/login",
+                            state: { from: location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
+}
+
+
+function NoMatch() {
+    let location = useLocation();
+
+    return (
+        <div>
+            <h3>
+                Возможно, ссылка не работает или страница удалена. Проверьте правильность ссылки, по которой вы пытаетесь перейти.
+        </h3>
+        </div>
+    );
+}
+
 
 export default App;

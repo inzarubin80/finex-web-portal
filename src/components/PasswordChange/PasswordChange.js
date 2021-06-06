@@ -15,12 +15,9 @@ import Container from '@material-ui/core/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendConfirmationСode, login, сlearError, cancelConformation } from '../../redux/user/userActions';
 
-
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+
 
 
 import {
@@ -28,9 +25,26 @@ import {
   useLocation
 } from "react-router-dom";
 
-const validationSchema = yup.object(
 
-);
+
+const validationSchema = yup.object().shape({
+  password: yup.string().required("Это поле обязательно к заполнению")
+  //.min(8, 'Пароль слишком короткий - минимум 8 символов.')
+  //.matches(/[a-zA-Z]/, 'Password can only contain Latin letters.')
+
+  .matches(
+    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+    "Пароль должен содержать не менее 8 символов, одну заглавную  латинскую букву, одну строчную латинскую букву, одну цифру и один специальный символ"
+  )
+  ,
+  
+  passwordRepeated: yup.string().required("Пароли должны совпадать")
+  .oneOf([yup.ref('password')], 'Пароли должны совпадать')
+  
+  
+
+});
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -116,12 +130,7 @@ const PasswordChange = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-
-
       dispatch(sendConfirmationСode(values.password))
-
-
-
     },
   });
 
@@ -152,7 +161,7 @@ const PasswordChange = () => {
               fullWidth
               id="password"
 
-              type="password"
+              //type="password"
 
               name="password"
               label="Новый пароль"
@@ -167,7 +176,7 @@ const PasswordChange = () => {
               fullWidth
               id="passwordRepeated"
 
-              type="password"
+             // type="password"
 
               name="passwordRepeated"
               label="Подтверждение пароля"
@@ -178,8 +187,8 @@ const PasswordChange = () => {
               className={classes.margin}
             />
             
-            <Button color="primary" variant="contained" fullWidth type="submit" disabled={confirmationСodeRequested}>
-              Сменить пароль
+            <Button   className={classes.margin} color="primary" variant="contained" fullWidth type="submit" disabled={confirmationСodeRequested}>
+              Установить пароль
             </Button>
 
 

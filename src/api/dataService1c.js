@@ -6,12 +6,12 @@ const auth = {auth: {username, password}}
 
 export const getAccessKey = (userID, requestKey, confirmationСode) => {
     let body = getBody({ userID, requestKey, confirmationСode })
-    return axios.post(`${API_URL}/?typerequest=getAccessKey`,  body,  auth);
+    return axios.post(`${API_URL}/?typerequest=getAccessKey`,  body);
 }
 
 export const sendConformationCode = (userID, requestKey) => {
     let body = getBody({ userID, requestKey })
-    return axios.post(`${API_URL}/?typerequest=sendConformationCode`,  body,  auth);
+    return axios.post(`${API_URL}/?typerequest=sendConformationCode`,  body);
 }
 
 const getBody = (body = {}) => {

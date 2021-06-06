@@ -2,8 +2,13 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch, Redirect, useLocation } from 'react-router-dom'
 
 import Login from './components/loginPage/LoginPage.js';
+
+import PasswordChange from './components/PasswordChange/PasswordChange';
+
+
 import Heder from './components/Heder/Heder.js';
 import Start from './components/Start/Start';
+
 
 
 
@@ -31,14 +36,14 @@ function App() {
                             <Login />
                         </Route>
 
+                        <Route path="/password-change/:key">
+                            <PasswordChange/>
+                        </Route>
+                        
 
                         <PrivateRoute exact path="/">
                             <Start />
                         </PrivateRoute>
-
-
-                       
-
 
                         <Route path="*">
                             <NoMatch />

@@ -13,11 +13,12 @@ import Container from '@material-ui/core/Container';
 
 
 import { useDispatch, useSelector } from 'react-redux';
-import { sendConfirmationСode, login, сlearError, cancelConformation } from '../../redux/user/userActions';
+
+import { setPassword} from '../../redux/user/userActions';
 
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-
+import { withRouter } from "react-router-dom";
 
 
 import {
@@ -104,23 +105,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const PasswordChange = () => {
+const PasswordChange = (props) => {
 
 
   const dispatch = useDispatch();
-  const err = useSelector(state => state.user.err);
-  const confirmationСodeSent = useSelector(state => state.user.confirmationСodeSent);
-  const confirmationСodeRequested = useSelector(state => state.user.confirmationСodeRequested);
-  const loggingIn = useSelector(state => state.user.loggingIn);
-  const [confirmationСode, setConfirmationСode] = React.useState('');
+  
+  console.log(props.match.params.key);
+
+  
+  const errPassword = useSelector(state => state.user.errPassword);
+  const passwordRequest = useSelector(state => state.user.passwordRequest);
+
+  
   let history = useHistory();
   let location = useLocation();
 
-  let { from } = location.state || { from: { pathname: "/makets" } };
+  let { from } = location.state || { from: { pathname: "/Login" } };
 
+  
   const sb = () => {
     history.replace(from);
   }
+
 
   const formik = useFormik({
     initialValues: {
@@ -130,7 +136,7 @@ const PasswordChange = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(sendConfirmationСode(values.password))
+      dispatch(setPassword(props.match.params.key, values.password, sb))
     },
   });
 
@@ -139,9 +145,7 @@ const PasswordChange = () => {
 
   return (
     <div>
-
-     
-
+ 
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -187,13 +191,13 @@ const PasswordChange = () => {
               className={classes.margin}
             />
             
-            <Button   className={classes.margin} color="primary" variant="contained" fullWidth type="submit" disabled={confirmationСodeRequested}>
+            <Button   className={classes.margin} color="primary" variant="contained" fullWidth type="submit" disabled={passwordRequest}>
               Установить пароль
             </Button>
 
 
-            {err && !confirmationСodeSent && <Alert severity="error">
-              <AlertTitle>  {err}</AlertTitle>
+            {errPassword && !passwordRequest && <Alert severity="error">
+              <AlertTitle>  {errPassword}</AlertTitle>
             </Alert>}
 
           </form>
@@ -204,5 +208,6 @@ const PasswordChange = () => {
 };
 
 
-export default PasswordChange
 
+
+export default withRouter(PasswordChange)

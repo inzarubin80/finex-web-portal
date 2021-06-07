@@ -7,11 +7,16 @@ import {
   CONFIRMATION_CODE_FAILURE,
   CONFIRMATION_CODE_SUCCESS,
   CLEAR_ERROR,
-  CANCEL_CONFIRMATION
+  CANCEL_CONFIRMATION,
+
+  SET_PASSWORD_REQUEST,
+  SET_PASSWORD_SUCCESS,
+  SET_PASSWORD_FAILURE
+
 
 } from '../types'
 
-import { executorRequests, sendConformationCode, getAccessKey} from '../../api/dataService1c';
+import { executorRequests, sendConformationCode, getAccessKey, passwordChange } from '../../api/dataService1c';
 import { v4 as uuidv4 } from 'uuid';
 
 const setLoginSuccess = (loginData) => {
@@ -51,64 +56,14 @@ export const logOut = (loginData) => {
   };
 };
 
-
-export const setConformationCodeRequest = (userID, requestKey) => {
-  return {
-    type: CONFIRMATION_CODE_REQUEST,
-    payload: { userID, requestKey }
-  };
-}
-
-export const setConformationCodeFailure = (err) => {
-  return {
-    type: CONFIRMATION_CODE_FAILURE,
-    payload: err
-  };
-}
-
-export const setConformationCodeSuccess = () => {
-  return {
-    type: CONFIRMATION_CODE_SUCCESS
-  };
-}
-
-export const  сlearError = ()=>{
+export const сlearError = () => {
   return {
     type: CLEAR_ERROR
   };
 }
 
-export const sendConfirmationСode = (userID) => {
 
-  const requestKey = uuidv4();
-  return (dispatch) => {
-
-
-    dispatch(setConformationCodeRequest(userID, requestKey));
-
-    const functionRequest = () => {
-      return sendConformationCode(userID, requestKey);
-    };
-
-    const responseHandlingFunction = (json) => {
-      
-      if (json.error) {
-        dispatch(setConformationCodeFailure(json.error));
-      } else {
-        dispatch(setConformationCodeSuccess());
-      }
-    }
-
-    const exceptionHandlingFunction = (error) => {
-      dispatch(setConformationCodeFailure(error));
-    };
-
-    executorRequests(functionRequest, responseHandlingFunction, exceptionHandlingFunction, dispatch);
-
-  };
-}
-
-export const login = (confirmationСode, cb) => {
+export const login = (email,password, cb) => {
 
 
   return (dispatch, getState) => {
@@ -120,19 +75,19 @@ export const login = (confirmationСode, cb) => {
     dispatch(setLoginRequest());
 
     const functionRequest = () => {
-      return getAccessKey(state.user.userID, state.user.requestKey, confirmationСode);
+      return getAccessKey(email, password);
     };
 
     const responseHandlingFunction = (json) => {
-    
+
       if (json.error) {
         dispatch(setLoginFailure(json.error));
       } else {
-        
+
         dispatch(setLoginSuccess());
         localStorage.setItem('key', json.key)
         localStorage.setItem('userID', state.user.userID)
-        
+
         cb();
 
       }
@@ -147,3 +102,55 @@ export const login = (confirmationСode, cb) => {
   };
 }
 
+////////////////////////////////////////////////////////////////////
+const setPasswordRequest = () => {
+  return {
+    type: SET_PASSWORD_REQUEST
+  };
+}
+
+const setPasswordFailure = (err) => {
+  return {
+    type: SET_PASSWORD_FAILURE,
+    payload: err
+  };
+}
+
+const setPasswordSuccess = () => {
+  return {
+    type: SET_PASSWORD_SUCCESS
+  };
+}
+
+export const setPassword = (passwordСhangeKey, password, cb) => {
+
+  return (dispatch) => {
+
+    dispatch(setPasswordRequest())
+
+    const functionRequest = () => {
+      return passwordChange(passwordСhangeKey, password);
+    };
+
+    const responseHandlingFunction = (json) => {
+
+      if (json.error) {
+        dispatch(setPasswordFailure(json.error));
+      } else {
+
+        dispatch(setPasswordSuccess());
+        localStorage.setItem('userID', json.userID)
+        cb();
+
+      }
+    }
+
+    const exceptionHandlingFunction = (error) => {
+      dispatch(setPasswordFailure(error));
+    };
+
+    executorRequests(functionRequest, responseHandlingFunction, exceptionHandlingFunction, dispatch);
+
+  }
+
+}

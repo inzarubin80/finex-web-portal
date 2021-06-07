@@ -2,10 +2,10 @@ import { API_URL, username, password } from '../Constants'
 import { logOut } from '../redux/user/userActions'
 import axios from 'axios'
 
-const auth = {auth: {username, password}} 
 
-export const getAccessKey = (userID, requestKey, confirmationСode) => {
-    let body = getBody({ userID, requestKey, confirmationСode })
+
+export const getAccessKey = (email,password) => {
+    let body = getBody({ email,password})
     return axios.post(`${API_URL}/?typerequest=getAccessKey`,  body);
 }
 
@@ -13,6 +13,12 @@ export const sendConformationCode = (userID, requestKey) => {
     let body = getBody({ userID, requestKey })
     return axios.post(`${API_URL}/?typerequest=sendConformationCode`,  body);
 }
+
+export const  passwordChange = (passwordСhangeKey, password) => {
+    let body = getBody({passwordСhangeKey, password })
+    return axios.post(`${API_URL}/?typerequest=passwordChange`, body);
+}
+
 
 const getBody = (body = {}) => {
     body.key = localStorage.getItem('key');

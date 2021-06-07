@@ -13,14 +13,12 @@ import Container from '@material-ui/core/Container';
 
 
 import { useDispatch, useSelector } from 'react-redux';
-import { sendConfirmationСode, login, сlearError, cancelConformation } from '../../redux/user/userActions';
+import {login} from '../../redux/user/userActions';
 
 
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+
 
 
 import {
@@ -95,14 +93,12 @@ const LoginPage = () => {
 
   const dispatch = useDispatch();
   const err = useSelector(state => state.user.err);
-  const confirmationСodeSent = useSelector(state => state.user.confirmationСodeSent);
-  const confirmationСodeRequested = useSelector(state => state.user.confirmationСodeRequested);
   const loggingIn = useSelector(state => state.user.loggingIn);
-  const [confirmationСode, setConfirmationСode] = React.useState('');
+
   let history = useHistory();
   let location = useLocation();
 
-  let { from } = location.state || { from: { pathname: "/makets" } };
+  let { from } = location.state || { from: { pathname: "/" } };
 
   const sb = () => {
     history.replace(from);
@@ -111,13 +107,14 @@ const LoginPage = () => {
   const formik = useFormik({
     initialValues: {
       email: localStorage.getItem('userID') || '',
+      password: ''
 
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
 
 
-      dispatch(sendConfirmationСode(values.email))
+      dispatch(login(values.email, values.password, sb))
 
 
 
@@ -130,59 +127,7 @@ const LoginPage = () => {
   return (
     <div>
 
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={confirmationСodeSent}
-        onClose={() => { }}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={confirmationСodeSent}>
-          <div className={classes.paperModal}>
-
-            <TextField
-              fullWidth
-              id="confirmationСode"
-              name="confirmationСode"
-              label="Код подтверждения"
-              value={confirmationСode}
-              autoComplete="off"
-              onChange={(event) => {
-
-                setConfirmationСode(event.target.value);
-                dispatch(сlearError());
-
-              }}
-
-
-            />
-
-            {err && confirmationСodeSent && <Alert severity="error" className={classes.alert}>
-              <AlertTitle>  {err}</AlertTitle>
-            </Alert>}
-
-
-
-            <div className={classes.buttonConfirmationGroup}>
-
-              <Button disabled={loggingIn} className={classes.buttonConfirmation} color="primary" variant="contained" type="submit" onClick={() => dispatch(login(confirmationСode.trim(), sb))}>
-                Подтвердить
-              </Button>
-
-              <Button disabled={loggingIn} variant="contained" color="secondary" onClick={() => { setConfirmationСode(''); dispatch(cancelConformation()) }}>
-                Отмена
-              </Button>
-            </div>
-
-          </div>
-        </Fade>
-      </Modal>
-
+     
 
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -208,12 +153,29 @@ const LoginPage = () => {
               helperText={formik.touched.email && formik.errors.email}
             />
 
-            <Button color="primary" variant="contained" fullWidth type="submit" disabled={confirmationСodeRequested}>
+            
+            <TextField
+              fullWidth
+              id="password"
+
+              //type="password"
+
+              name="password"
+              label="Пароль"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              className={classes.margin}
+            />
+
+
+            <Button color="primary" variant="contained" fullWidth type="submit" disabled={loggingIn}>
               Войти
             </Button>
 
 
-            {err && !confirmationСodeSent && <Alert severity="error">
+            {err && !loggingIn && <Alert severity="error">
               <AlertTitle>  {err}</AlertTitle>
             </Alert>}
 

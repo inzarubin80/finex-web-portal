@@ -11,7 +11,11 @@ import {
 
     SET_PASSWORD_REQUEST,
     SET_PASSWORD_FAILURE,
-    SET_PASSWORD_SUCCESS
+    SET_PASSWORD_SUCCESS,
+
+    GETTING_KEY_CHANGE_PASSWORD_REQUEST,
+  GETTING_KEY_CHANGE_PASSWORD_SUCCESS,
+  GETTING_KEY_CHANGE_PASSWORD_FAILURE,
 
 } from '../types'
 
@@ -20,16 +24,20 @@ const initialState = {
 
     isLoggedIn: localStorage.getItem('key') ? true : false,
     userID: localStorage.getItem('userID'),
-    typeUserID: localStorage.getItem('typeUserID'),
+
     loggingIn: false,
     err: '',
     requestKey: '',
+    
     confirmationСodeSent: false,
     confirmationСodeRequested: false,
+
+
     passwordRequest: false,
-    errPassword: ''
+    errPassword: '',
+    errorConfirmationCode : '',
 
-
+    keyСhangePasswordRequested: false,
 
 
 };
@@ -38,6 +46,30 @@ export default (state = initialState, action) => {
 
 
     switch (action.type) {
+
+
+        case GETTING_KEY_CHANGE_PASSWORD_REQUEST:
+            return {
+                ...state,
+                keyСhangePasswordRequested: true,
+                errorConfirmationCode: ''
+            };
+
+        case GETTING_KEY_CHANGE_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                keyСhangePasswordRequested: false,
+                errorConfirmationCode: ''
+            };
+
+        case GETTING_KEY_CHANGE_PASSWORD_FAILURE:
+            return {
+                ...state,
+                keyСhangePasswordRequested: false,
+                errorConfirmationCode: action.payload,
+            };
+
+
 
         case SET_PASSWORD_REQUEST:
             return {
@@ -50,7 +82,10 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 passwordRequest: false,
-                errPassword: ''
+                errPassword: '',
+
+                loggingIn: false,
+                isLoggedIn: true,
             };
 
         case SET_PASSWORD_FAILURE:
@@ -77,7 +112,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 confirmationСodeRequested: false,
-                err: '',
+                errorConfirmationCode: '',
                 confirmationСodeSent: true,
 
             };
@@ -87,7 +122,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 confirmationСodeRequested: false,
-                err: action.payload
+                errorConfirmationCode: action.payload
             };
 
 
@@ -98,6 +133,7 @@ export default (state = initialState, action) => {
                 confirmationСodeRequested: true,
                 loggingIn: false,
                 isLoggedIn: false,
+                errorConfirmationCode: '',
                 err: '',
                 confirmationСodeSent: false
             };

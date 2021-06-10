@@ -2,12 +2,11 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch, Redirect, useLocation } from 'react-router-dom'
 
 import Login from './components/loginPage/LoginPage.js';
-
 import PasswordChange from './components/PasswordChange/PasswordChange';
-
-
 import Heder from './components/Heder/Heder.js';
 import Start from './components/Start/Start';
+import GetCode from './components/GetCode/GetCode';
+
 
 
 
@@ -40,7 +39,10 @@ function App() {
                             <PasswordChange/>
                         </Route>
                         
-
+                        <Route path="/get-code">
+                            <GetCode/>
+                        </Route>
+                        
                         <PrivateRoute exact path="/">
                             <Start />
                         </PrivateRoute>

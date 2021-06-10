@@ -13,13 +13,13 @@ import Container from '@material-ui/core/Container';
 
 
 import { useDispatch, useSelector } from 'react-redux';
-import {login} from '../../redux/user/userActions';
+import { login } from '../../redux/user/userActions';
 
 
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 
-
+import { withRouter } from "react-router-dom";
 
 import {
   useHistory,
@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const LoginPage = () => {
+const LoginPage = (props) => {
 
 
   const dispatch = useDispatch();
@@ -99,6 +99,8 @@ const LoginPage = () => {
   let location = useLocation();
 
   let { from } = location.state || { from: { pathname: "/" } };
+
+ 
 
   const sb = () => {
     history.replace(from);
@@ -127,7 +129,7 @@ const LoginPage = () => {
   return (
     <div>
 
-     
+
 
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -153,7 +155,7 @@ const LoginPage = () => {
               helperText={formik.touched.email && formik.errors.email}
             />
 
-            
+
             <TextField
               fullWidth
               id="password"
@@ -174,6 +176,7 @@ const LoginPage = () => {
               Войти
             </Button>
 
+            <Button color="primary" onClick={()=>{props.history.push({ pathname: '/get-code' })}}>Забыли пароль?</Button>
 
             {err && !loggingIn && <Alert severity="error">
               <AlertTitle>  {err}</AlertTitle>
@@ -187,5 +190,5 @@ const LoginPage = () => {
 };
 
 
-export default LoginPage
 
+export default withRouter(LoginPage)

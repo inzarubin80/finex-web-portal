@@ -9,10 +9,17 @@ export const getAccessKey = (email,password) => {
     return axios.post(`${API_URL}/?typerequest=getAccessKey`,  body);
 }
 
-export const sendConformationCode = (userID, requestKey) => {
+export const getConformationCodeApi = (userID, requestKey) => {
     let body = getBody({ userID, requestKey })
-    return axios.post(`${API_URL}/?typerequest=sendConformationCode`,  body);
+    return axios.post(`${API_URL}/?typerequest=getConformationCode`,  body);
 }
+
+export const getKeyChangeApi = (userID, requestKey, code) => {
+    let body = getBody({ userID, requestKey, code})
+    return axios.post(`${API_URL}/?typerequest=getKeyChange`,  body);
+}
+
+
 
 export const  passwordChange = (passwordСhangeKey, password) => {
     let body = getBody({passwordСhangeKey, password })

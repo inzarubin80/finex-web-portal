@@ -120,7 +120,7 @@ const PasswordChange = (props) => {
   let history = useHistory();
   let location = useLocation();
 
-  let { from } = location.state || { from: { pathname: "/Login" } };
+  let { from } = location.state || { from: { pathname: "/" } };
 
   
   const sb = () => {

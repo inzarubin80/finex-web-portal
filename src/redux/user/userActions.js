@@ -3,20 +3,27 @@ import {
   LOGIN_REQUEST,
   LOGIN_FAILURE,
   LOGIN_LOGOUT,
+  
   CONFIRMATION_CODE_REQUEST,
   CONFIRMATION_CODE_FAILURE,
   CONFIRMATION_CODE_SUCCESS,
+
+
   CLEAR_ERROR,
   CANCEL_CONFIRMATION,
 
   SET_PASSWORD_REQUEST,
   SET_PASSWORD_SUCCESS,
-  SET_PASSWORD_FAILURE
+  SET_PASSWORD_FAILURE,
+
+  GETTING_KEY_CHANGE_PASSWORD_REQUEST,
+  GETTING_KEY_CHANGE_PASSWORD_SUCCESS,
+  GETTING_KEY_CHANGE_PASSWORD_FAILURE
 
 
 } from '../types'
 
-import { executorRequests, sendConformationCode, getAccessKey, passwordChange } from '../../api/dataService1c';
+import { executorRequests, getConformationCodeApi, getAccessKey, passwordChange,getKeyChangeApi } from '../../api/dataService1c';
 import { v4 as uuidv4 } from 'uuid';
 
 const setLoginSuccess = (loginData) => {
@@ -140,6 +147,8 @@ export const setPassword = (passwordСhangeKey, password, cb) => {
 
         dispatch(setPasswordSuccess());
         localStorage.setItem('userID', json.userID)
+        localStorage.setItem('key', json.key)
+        
         cb();
 
       }
@@ -153,4 +162,115 @@ export const setPassword = (passwordСhangeKey, password, cb) => {
 
   }
 
+}
+
+///////////////////////////////////////////////////////////////////
+
+export const getConformationCodeRequest = (userID, requestKey) => {
+  return {
+    type: CONFIRMATION_CODE_REQUEST,
+    payload: { userID, requestKey }
+  };
+}
+
+export const getConformationCodeFailure = (err) => {
+  return {
+    type: CONFIRMATION_CODE_FAILURE,
+    payload: err
+  };
+}
+
+export const getConformationCodeSuccess = () => {
+  return {
+    type: CONFIRMATION_CODE_SUCCESS
+  };
+}
+
+
+export const getConfirmationСode = (userID) => {
+
+  const requestKey = uuidv4();
+  return (dispatch) => {
+
+
+    dispatch(getConformationCodeRequest(userID, requestKey));
+
+    const functionRequest = () => {
+      return getConformationCodeApi(userID, requestKey);
+    };
+
+    const responseHandlingFunction = (json) => {
+      
+      if (json.error) {
+        dispatch(getConformationCodeFailure(json.error));
+      } else {
+        dispatch(getConformationCodeSuccess());
+      }
+    }
+
+    const exceptionHandlingFunction = (error) => {
+      dispatch(getConformationCodeFailure(error));
+    };
+
+    executorRequests(functionRequest, responseHandlingFunction, exceptionHandlingFunction, dispatch);
+
+  };
+}
+
+
+///////////////////////////////////////////////////////////////////
+
+
+export const getKeyChangeRequest = () => {
+  return {
+    type:     GETTING_KEY_CHANGE_PASSWORD_REQUEST,
+    
+  };
+}
+
+export const getKeyChangeFailure = (err) => {
+  return {
+    type: GETTING_KEY_CHANGE_PASSWORD_FAILURE,
+    payload: err
+  };
+}
+
+export const getKeyChangeSuccess = () => {
+  return {
+    type: GETTING_KEY_CHANGE_PASSWORD_SUCCESS
+  };
+}
+
+
+export const getKeyChange = (userID, code, history) => {
+
+  return (dispatch, getState) => {
+
+
+    dispatch(getKeyChangeRequest());
+
+ 
+
+
+    const functionRequest = () => {
+      return getKeyChangeApi(userID, getState().user.requestKey, code);
+    };
+
+    const responseHandlingFunction = (json) => {
+      
+      if (json.error) {
+        dispatch(getKeyChangeFailure(json.error));
+      } else {
+        
+        dispatch(getKeyChangeSuccess());
+        history.push({ pathname: '/password-change/' + json.key })
+
+      }
+    }
+
+    const exceptionHandlingFunction = (error) => {
+      dispatch(getKeyChangeFailure(error));
+    };
+    executorRequests(functionRequest, responseHandlingFunction, exceptionHandlingFunction, dispatch);
+  };
 }

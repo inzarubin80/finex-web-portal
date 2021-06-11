@@ -18,8 +18,9 @@ import {
 
   GETTING_KEY_CHANGE_PASSWORD_REQUEST,
   GETTING_KEY_CHANGE_PASSWORD_SUCCESS,
-  GETTING_KEY_CHANGE_PASSWORD_FAILURE
+  GETTING_KEY_CHANGE_PASSWORD_FAILURE,
 
+  OPEN_GET_CODE,
 
 } from '../types'
 
@@ -249,9 +250,6 @@ export const getKeyChange = (userID, code, history) => {
 
     dispatch(getKeyChangeRequest());
 
- 
-
-
     const functionRequest = () => {
       return getKeyChangeApi(userID, getState().user.requestKey, code);
     };
@@ -274,3 +272,14 @@ export const getKeyChange = (userID, code, history) => {
     executorRequests(functionRequest, responseHandlingFunction, exceptionHandlingFunction, dispatch);
   };
 }
+/////////////////////////////////////////////////////////////////////////////////
+
+export const openGetCode = (history)=>{
+
+  history.push({ pathname: '/get-code'});
+  return {
+    type: OPEN_GET_CODE
+  };
+
+}
+

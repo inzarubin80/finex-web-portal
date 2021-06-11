@@ -32,7 +32,7 @@ const validationSchema = yup.object({
 
 const validationSchemaСonfirmation = yup.object({
     code: yup
-        .string('code')
+        .string()
         .required('Заполните код подтверждения'),
 });
 
@@ -179,8 +179,8 @@ const GetCode = (props) => {
                             label="Код подтверждения"
                             value={formik.values.code}
                             onChange={formik.handleChange}
-                            error={formik.touched.email && Boolean(formik.errors.email)}
-                            helperText={formik.touched.email && formik.errors.email}
+                            error={formik.touched.code && Boolean(formik.errors.code)}
+                            helperText={formik.touched.code && formik.errors.code}
                         />}
 
 

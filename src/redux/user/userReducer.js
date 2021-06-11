@@ -1,21 +1,25 @@
 import {
     CLEAR_ERROR,
+    
     LOGIN_SUCCESS,
     LOGIN_REQUEST,
     LOGIN_FAILURE,
+    
     LOGIN_LOGOUT,
+
     CONFIRMATION_CODE_REQUEST,
     CONFIRMATION_CODE_SUCCESS,
     CONFIRMATION_CODE_FAILURE,
-    CANCEL_CONFIRMATION,
 
     SET_PASSWORD_REQUEST,
     SET_PASSWORD_FAILURE,
     SET_PASSWORD_SUCCESS,
 
     GETTING_KEY_CHANGE_PASSWORD_REQUEST,
-  GETTING_KEY_CHANGE_PASSWORD_SUCCESS,
-  GETTING_KEY_CHANGE_PASSWORD_FAILURE,
+    GETTING_KEY_CHANGE_PASSWORD_SUCCESS,
+    GETTING_KEY_CHANGE_PASSWORD_FAILURE,
+
+    OPEN_GET_CODE
 
 } from '../types'
 
@@ -25,19 +29,18 @@ const initialState = {
     isLoggedIn: localStorage.getItem('key') ? true : false,
     userID: localStorage.getItem('userID'),
 
-    loggingIn: false,
-    err: '',
-    requestKey: '',
     
+    requestKey: '',
     confirmationСodeSent: false,
-    confirmationСodeRequested: false,
-
-
+    
     passwordRequest: false,
+    confirmationСodeRequested: false,
+    loggingIn: false,
+    keyСhangePasswordRequested: false,
+
+    err: '',
     errPassword: '',
     errorConfirmationCode : '',
-
-    keyСhangePasswordRequested: false,
 
 
 };
@@ -47,6 +50,16 @@ export default (state = initialState, action) => {
 
     switch (action.type) {
 
+
+        case OPEN_GET_CODE:{
+            return {
+                ...state,
+                errorConfirmationCode: '',
+                confirmationСodeSent: false,
+                errPassword: ''
+            };
+
+        }
 
         case GETTING_KEY_CHANGE_PASSWORD_REQUEST:
             return {
@@ -101,12 +114,7 @@ export default (state = initialState, action) => {
                 err: ''
             };
 
-        case CANCEL_CONFIRMATION:
-            return {
-                ...state,
-                err: '',
-                confirmationСodeSent: false
-            };
+      
 
         case CONFIRMATION_CODE_SUCCESS:
             return {

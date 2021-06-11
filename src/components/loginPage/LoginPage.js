@@ -13,7 +13,7 @@ import Container from '@material-ui/core/Container';
 
 
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../redux/user/userActions';
+import { login, openGetCode } from '../../redux/user/userActions';
 
 
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -176,7 +176,7 @@ const LoginPage = (props) => {
               Войти
             </Button>
 
-            <Button color="primary" onClick={()=>{props.history.push({ pathname: '/get-code' })}}>Забыли пароль?</Button>
+            <Button color="primary" onClick={()=>dispatch(openGetCode(props.history))}>Забыли пароль?</Button>
 
             {err && !loggingIn && <Alert severity="error">
               <AlertTitle>  {err}</AlertTitle>

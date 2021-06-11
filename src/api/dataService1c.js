@@ -16,9 +16,8 @@ export const getConformationCodeApi = (userID, requestKey) => {
 
 export const getKeyChangeApi = (userID, requestKey, code) => {
     let body = getBody({ userID, requestKey, code})
-    return axios.post(`${API_URL}/?typerequest=getKeyChange`,  body);
+    return axios.post(`${API_URL}/?typerequest=getKeyChangePassword`,  body);
 }
-
 
 
 export const  passwordChange = (passwordСhangeKey, password) => {

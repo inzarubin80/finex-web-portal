@@ -13,7 +13,7 @@ import GetCode from './components/GetCode/GetCode';
 
 import { useSelector } from 'react-redux';
 
-import  firebase from './firebase'
+//import  firebase from './firebase'
 
 function App() {
 

@@ -2,35 +2,29 @@ import { API_URL, username, password } from '../Constants'
 import { logOut } from '../redux/user/userActions'
 import axios from 'axios'
 
+axios.defaults.headers.common = {
+    'Authorization': `bearer ${localStorage.getItem('AccessToken')}`,
+    'FCM':   localStorage.getItem('messageRecipientKey')
+}
 
 
-export const getAccessKey = (email,password) => {
-    let body = getBody({ email,password})
-    return axios.post(`${API_URL}/?typerequest=getAccessKey`,  body);
+export const login = (email,password) => {
+    return axios.post(`${API_URL}/?typerequest=login`,  {email,password});
 }
 
 export const getConformationCodeApi = (userID, requestKey) => {
-    let body = getBody({ userID, requestKey })
-    return axios.post(`${API_URL}/?typerequest=getConformationCode`,  body);
+    return axios.post(`${API_URL}/?typerequest=getConformationCode`,  { userID, requestKey });   
 }
 
 export const getKeyChangeApi = (userID, requestKey, code) => {
-    let body = getBody({ userID, requestKey, code})
-    return axios.post(`${API_URL}/?typerequest=getKeyChangePassword`,  body);
+    return axios.post(`${API_URL}/?typerequest=getKeyChangePassword`,  { userID, requestKey, code});
 }
 
 
 export const  passwordChange = (passwordСhangeKey, password) => {
-    let body = getBody({passwordСhangeKey, password })
-    return axios.post(`${API_URL}/?typerequest=passwordChange`, body);
+    return axios.post(`${API_URL}/?typerequest=passwordChange`, {passwordСhangeKey, password });
 }
 
-
-const getBody = (body = {}) => {
-    body.key = localStorage.getItem('key');
-    body.messageRecipientKey = localStorage.getItem('messageRecipientKey');
-    return body
-}
 
 export const executorRequests = (functionRequest, responseHandlingFunction, exceptionHandlingFunction, dispatch) => {
     functionRequest()

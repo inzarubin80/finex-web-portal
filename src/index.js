@@ -12,7 +12,7 @@ import rootReducer from './redux/rootReducer';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ruRU } from '@material-ui/core/locale';
 
-
+import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
 const theme = createMuiTheme({
   palette: {
@@ -30,9 +30,16 @@ const logger = store => next => action => {
 
 const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
+  
+  const fpPromise = FingerprintJS.load()
 
-
-
+  fpPromise
+  .then(fp => fp.get())
+  .then(result => {
+    const visitorId = result.visitorId
+    console.log("visitorId", visitorId)
+  })
+  
 
 ReactDOM.render(
 

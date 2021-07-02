@@ -18,6 +18,9 @@ import { login, openGetCode } from '../../redux/user/userActions';
 
 import { Alert, AlertTitle } from '@material-ui/lab';
 
+//import Fingerprint2 from 'fingerprintjs2';
+
+
 
 import { withRouter } from "react-router-dom";
 
@@ -100,6 +103,8 @@ const LoginPage = (props) => {
 
   let { from } = location.state || { from: { pathname: "/" } };
 
+
+ 
  
 
   const sb = () => {

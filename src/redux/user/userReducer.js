@@ -151,6 +151,7 @@ export default (state = initialState, action) => {
                 ...state,
                 loggingIn: true,
                 isLoggedIn: false,
+                err: ''
 
             };
 

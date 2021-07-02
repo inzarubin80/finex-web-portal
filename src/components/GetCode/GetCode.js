@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getConfirmationСode, getKeyChange} from '../../redux/user/userActions';
+import { getConfirmationСode, getKeyChange, openGetCode} from '../../redux/user/userActions';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 import { withRouter } from "react-router-dom";
@@ -141,12 +141,12 @@ const GetCode = (props) => {
                         <LockOutlinedIcon />
                     </Avatar>
 
-                    {!confirmationСodeSent && <Typography className={classes.margin} variant="h6">
+                    {!confirmationСodeSent && <Typography className={classes.margin} variant="h7">
                         На указанный адрес будет отправлено письмо с кодом подтверждения
           </Typography>}
 
 
-                    {confirmationСodeSent && <Typography className={classes.margin} variant="h6">
+                    {confirmationСodeSent && <Typography className={classes.margin} variant="h7">
 
                         Проверьте электронную почту.
                         Вы получите код подтверждения,
@@ -191,6 +191,8 @@ const GetCode = (props) => {
                         {confirmationСodeSent && <Button color="primary" variant="contained" fullWidth type="submit" disabled={confirmationСodeRequested}>
                            Подтвердить
             </Button>}
+
+            {confirmationСodeSent && err &&  <Button color="primary" onClick={()=>dispatch(openGetCode(props.history))}>Повторить отправку</Button>}
 
 
                         {err && !confirmationСodeRequested && <Alert severity="error">

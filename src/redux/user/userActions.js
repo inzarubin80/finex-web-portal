@@ -24,7 +24,7 @@ import {
 
 } from '../types'
 
-import { executorRequests, getConformationCodeApi, getAccessKey, passwordChange,getKeyChangeApi } from '../../api/dataService1c';
+import { executorRequests, getConformationCodeApi, login as loginApi, passwordChange,getKeyChangeApi } from '../../api/dataService1c';
 import { v4 as uuidv4 } from 'uuid';
 
 const setLoginSuccess = (loginData) => {
@@ -83,7 +83,7 @@ export const login = (email,password, cb) => {
     dispatch(setLoginRequest());
 
     const functionRequest = () => {
-      return getAccessKey(email, password);
+      return loginApi(email, password);
     };
 
     const responseHandlingFunction = (json) => {
@@ -93,7 +93,9 @@ export const login = (email,password, cb) => {
       } else {
 
         dispatch(setLoginSuccess());
-        localStorage.setItem('key', json.key)
+        localStorage.setItem('AccessToken', json.AccessToken)
+        localStorage.setItem('RefreshToken', json.RefreshToken)
+        
         localStorage.setItem('userID', state.user.userID)
 
         cb();
@@ -148,8 +150,9 @@ export const setPassword = (passwordСhangeKey, password, cb) => {
 
         dispatch(setPasswordSuccess());
         localStorage.setItem('userID', json.userID)
-        localStorage.setItem('key', json.key)
-        
+        localStorage.setItem('AccessToken', json.AccessToken)
+        localStorage.setItem('RefreshToken', json.RefreshToken)
+          
         cb();
 
       }

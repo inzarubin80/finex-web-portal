@@ -12,8 +12,8 @@ export const login = (email,password) => {
     return axios.post(`${API_URL}/?typerequest=login`,  {email,password});
 }
 
-export const getConformationCodeApi = (userID, requestKey) => {
-    return axios.post(`${API_URL}/?typerequest=getConformationCode`,  { userID, requestKey });   
+export const getConformationCodeApi = (userID) => {
+    return axios.post(`${API_URL}/?typerequest=getConformationCode`,  { userID});   
 }
 
 export const getKeyChangeApi = (userID, requestKey, code) => {

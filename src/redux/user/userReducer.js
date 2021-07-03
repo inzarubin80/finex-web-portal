@@ -56,7 +56,8 @@ export default (state = initialState, action) => {
                 ...state,
                 errorConfirmationCode: '',
                 confirmationСodeSent: false,
-                errPassword: ''
+                errPassword: '',
+                requestKey:''
             };
 
         }
@@ -122,6 +123,7 @@ export default (state = initialState, action) => {
                 confirmationСodeRequested: false,
                 errorConfirmationCode: '',
                 confirmationСodeSent: true,
+                requestKey: action.payload
 
             };
 

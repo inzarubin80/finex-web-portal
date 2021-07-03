@@ -58,7 +58,9 @@ const setLoginFailure = (err) => {
 
 
 export const logOut = (loginData) => {
-  localStorage.removeItem('key')
+  localStorage.removeItem('AccessToken')
+  localStorage.removeItem('RefreshToken')
+  
   return {
     type: LOGIN_LOGOUT
   };
@@ -95,9 +97,7 @@ export const login = (email,password, cb) => {
         dispatch(setLoginSuccess());
         localStorage.setItem('AccessToken', json.AccessToken)
         localStorage.setItem('RefreshToken', json.RefreshToken)
-        
         localStorage.setItem('userID', state.user.userID)
-
         cb();
 
       }
@@ -170,10 +170,10 @@ export const setPassword = (passwordСhangeKey, password, cb) => {
 
 ///////////////////////////////////////////////////////////////////
 
-export const getConformationCodeRequest = (userID, requestKey) => {
+export const getConformationCodeRequest = (userID) => {
   return {
     type: CONFIRMATION_CODE_REQUEST,
-    payload: { userID, requestKey }
+    payload: { userID}
   };
 }
 
@@ -184,23 +184,25 @@ export const getConformationCodeFailure = (err) => {
   };
 }
 
-export const getConformationCodeSuccess = () => {
+export const getConformationCodeSuccess = (requestKey) => {
   return {
-    type: CONFIRMATION_CODE_SUCCESS
+    type: CONFIRMATION_CODE_SUCCESS,
+    payload: requestKey
   };
 }
 
 
 export const getConfirmationСode = (userID) => {
 
-  const requestKey = uuidv4();
+  //const requestKey = uuidv4();
+
   return (dispatch) => {
 
 
-    dispatch(getConformationCodeRequest(userID, requestKey));
+    dispatch(getConformationCodeRequest(userID));
 
     const functionRequest = () => {
-      return getConformationCodeApi(userID, requestKey);
+      return getConformationCodeApi(userID);
     };
 
     const responseHandlingFunction = (json) => {
@@ -208,7 +210,7 @@ export const getConfirmationСode = (userID) => {
       if (json.error) {
         dispatch(getConformationCodeFailure(json.error));
       } else {
-        dispatch(getConformationCodeSuccess());
+        dispatch(getConformationCodeSuccess(json.requestKey));
       }
     }
 

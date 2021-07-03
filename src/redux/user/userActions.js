@@ -58,8 +58,8 @@ const setLoginFailure = (err) => {
 
 
 export const logOut = (loginData) => {
-  localStorage.removeItem('AccessToken')
-  localStorage.removeItem('RefreshToken')
+  localStorage.removeItem('accessToken')
+  localStorage.removeItem('refreshToken')
   
   return {
     type: LOGIN_LOGOUT
@@ -95,8 +95,8 @@ export const login = (email,password, cb) => {
       } else {
 
         dispatch(setLoginSuccess());
-        localStorage.setItem('AccessToken', json.AccessToken)
-        localStorage.setItem('RefreshToken', json.RefreshToken)
+        localStorage.setItem('accessToken', json.accessToken)
+        localStorage.setItem('refreshToken', json.refreshToken)
         localStorage.setItem('userID', state.user.userID)
         cb();
 
@@ -150,8 +150,8 @@ export const setPassword = (passwordСhangeKey, password, cb) => {
 
         dispatch(setPasswordSuccess());
         localStorage.setItem('userID', json.userID)
-        localStorage.setItem('AccessToken', json.AccessToken)
-        localStorage.setItem('RefreshToken', json.RefreshToken)
+        localStorage.setItem('accessToken', json.accessToken)
+        localStorage.setItem('refreshToken', json.refreshToken)
           
         cb();
 

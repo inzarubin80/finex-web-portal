@@ -3,7 +3,7 @@ import { logOut } from '../redux/user/userActions'
 import axios from 'axios'
 
 axios.defaults.headers.common = {
-    'Authorization': `bearer ${localStorage.getItem('AccessToken')}`,
+    'Authorization': `bearer ${localStorage.getItem('accessToken')}`,
     'FCM':   localStorage.getItem('messageRecipientKey')
 }
 

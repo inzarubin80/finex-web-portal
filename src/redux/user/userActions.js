@@ -25,7 +25,7 @@ import {
 } from '../types'
 
 import { executorRequests, getConformationCodeApi, login as loginApi, passwordChange,getKeyChangeApi } from '../../api/dataService1c';
-import { v4 as uuidv4 } from 'uuid';
+
 
 const setLoginSuccess = (loginData) => {
   return {
@@ -59,7 +59,6 @@ const setLoginFailure = (err) => {
 
 export const logOut = (loginData) => {
   localStorage.removeItem('accessToken')
-  localStorage.removeItem('refreshToken')
   
   return {
     type: LOGIN_LOGOUT
@@ -96,7 +95,6 @@ export const login = (email,password, cb) => {
 
         dispatch(setLoginSuccess());
         localStorage.setItem('accessToken', json.accessToken)
-        localStorage.setItem('refreshToken', json.refreshToken)
         localStorage.setItem('userID', state.user.userID)
         cb();
 
@@ -151,7 +149,6 @@ export const setPassword = (passwordСhangeKey, password, cb) => {
         dispatch(setPasswordSuccess());
         localStorage.setItem('userID', json.userID)
         localStorage.setItem('accessToken', json.accessToken)
-        localStorage.setItem('refreshToken', json.refreshToken)
           
         cb();
 

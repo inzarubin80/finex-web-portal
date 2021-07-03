@@ -95,7 +95,7 @@ export const login = (email,password, cb) => {
 
         dispatch(setLoginSuccess());
         localStorage.setItem('accessToken', json.accessToken)
-        localStorage.setItem('userID', state.user.userID)
+        //localStorage.setItem('userID', state.user.userID)
         cb();
 
       }
@@ -147,7 +147,7 @@ export const setPassword = (passwordСhangeKey, password, cb) => {
       } else {
 
         dispatch(setPasswordSuccess());
-        localStorage.setItem('userID', json.userID)
+       // localStorage.setItem('userID', json.userID)
         localStorage.setItem('accessToken', json.accessToken)
           
         cb();

@@ -27,7 +27,7 @@ import {
 const initialState = {
 
     isLoggedIn: localStorage.getItem('accessToken') ? true : false,
-    userID: localStorage.getItem('userID'),
+    userID: '',
 
     
     requestKey: '',

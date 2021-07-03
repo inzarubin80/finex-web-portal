@@ -7,7 +7,6 @@ export const getAccessToken = () => {
     return localStorage.getItem('accessToken')
 }
 
-
 export const setAccessToken = (accessToken) => {
 
     console.log('accessToken', accessToken);
@@ -36,12 +35,9 @@ export const testPrivateRequest = () => {
     return axios.post(`${API_URL}/?typerequest=testPrivateRequest`, { test: 'test' });
 }
 
-
 const refreshToken = () => {
     return axios.post(`${API_URL}/?typerequest=refreshToken`, {});
 }
-
-
 
 export const executorRequests = (functionRequest, responseHandlingFunction, exceptionHandlingFunction, dispatch) => {
 

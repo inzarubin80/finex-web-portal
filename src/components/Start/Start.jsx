@@ -41,8 +41,8 @@ export default function Start() {
 
 
 
-    const [data, setData] = React.useState('');
-
+    const [time, setTime] = React.useState('');
+    const [numberSessions, setNumberSessions] = React.useState('');
 
     const testHendle = () => {
 
@@ -53,14 +53,16 @@ export default function Start() {
         const responseHandlingFunction = (json) => {
 
             if (json.error) {
-                setData(json.error);
+                exceptionHandlingFunction('')
             } else {
-                setData(json.time);
+                setTime(json.time);
+                setNumberSessions(json.numberSessions); 
             }
         }
 
         const exceptionHandlingFunction = (error) => {
-            setData(error);
+            setTime('');
+            setNumberSessions(''); 
         };
         
         executorRequests(functionRequest, responseHandlingFunction, exceptionHandlingFunction, dispatch)  
@@ -87,9 +89,14 @@ export default function Start() {
                      </Button>
 
             <Typography variant="body2" color="textSecondary" component="p">
-                Время серверва 1с:  {data}
+                Время серверва 1с:  {time}
             </Typography>
 
+
+            <Typography variant="body2" color="textSecondary" component="p">
+                Количество сессий 1c:  {numberSessions}
+            </Typography>
+            
 
 
         </div>

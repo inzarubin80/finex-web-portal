@@ -94,7 +94,7 @@ export default function Start() {
                 Количество сессий 1c:  {numberSessions}
             </Typography>
             
-            <Button variant="contained" color="primary" onClick={() => testHendle()}>
+            <Button  variant="outlined" color="primary" onClick={() => testHendle()}>
                 Тест 1c
                      </Button>
 

@@ -16,15 +16,15 @@ export const setAccessToken = (accessToken) => {
 }
 
 export const login = (email, password) => {
-    return axios.post(`${API_URL}/?typerequest=login`, { email, password });
+    return axios.post(`${API_URL}/?typerequest=login`, {email, password });
 }
 
-export const getConformationCodeApi = (userID) => {
-    return axios.post(`${API_URL}/?typerequest=getConformationCode`, { userID });
+export const getConformationCodeApi = (email) => {
+    return axios.post(`${API_URL}/?typerequest=getConformationCode`, {email});
 }
 
-export const getKeyChangeApi = (userID, requestKey, code) => {
-    return axios.post(`${API_URL}/?typerequest=getKeyChangePassword`, { userID, requestKey, code });
+export const getKeyChangeApi = (email, requestKey, code) => {
+    return axios.post(`${API_URL}/?typerequest=getKeyChangePassword`, {email, requestKey, code });
 }
 
 export const passwordChange = (passwordСhangeKey, password) => {

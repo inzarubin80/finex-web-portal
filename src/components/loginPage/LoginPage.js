@@ -32,7 +32,7 @@ import {
 const validationSchema = yup.object({
   email: yup
     .string('Enter your email')
-    .email('Enter a valid email')
+    //.email('Enter a valid email')
     .required('Email is required'),
 
 }
